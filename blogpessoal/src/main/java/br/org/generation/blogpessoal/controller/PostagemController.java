@@ -1,7 +1,10 @@
 package br.org.generation.blogpessoal.controller;
 
 import java.util.List;
+import java.util.Optional;
+
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +17,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import br.org.generation.blogpessoal.model.Postagem;
+import br.org.generation.blogpessoal.model.Tema;
 import br.org.generation.blogpessoal.repository.PostagemRepository;
+import br.org.generation.blogpessoal.repository.TemaRepository;
 
 @RestController
 @RequestMapping("/postagens")
@@ -25,10 +31,12 @@ public class PostagemController {
 	@Autowired
 	private PostagemRepository postagemRepository;
 	
+	@Autowired
+	private TemaRepository temaRepository;
+	
 	@GetMapping
 	public ResponseEntity <List<Postagem>> getAll(){
 		return ResponseEntity.ok(postagemRepository.findAll());
-		
 		// select * from tb_postagens;
 	}
 	
@@ -43,7 +51,6 @@ public class PostagemController {
 	public ResponseEntity <List<Postagem>> getByTitulo(@PathVariable String titulo){
 		return ResponseEntity.ok(postagemRepository
 								.findAllByTituloContainingIgnoreCase(titulo));
-		
 	}
 	
 	@PostMapping
@@ -51,6 +58,8 @@ public class PostagemController {
 		return ResponseEntity.status(HttpStatus.CREATED)
 								.body(postagemRepository.save(postagem));
 	}
+	
+	
 	
 	@PutMapping
 	public ResponseEntity <Postagem> putPostagem(@Valid @RequestBody Postagem postagem){
@@ -68,6 +77,7 @@ public class PostagemController {
 		return postagemRepository.findById(id)
 				.map(resposta -> {
 					postagemRepository.deleteById(id);
+					
 					return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 					})
 				.orElse(ResponseEntity
