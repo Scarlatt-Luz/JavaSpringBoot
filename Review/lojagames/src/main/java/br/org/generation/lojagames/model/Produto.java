@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.UpdateTimestamp;
@@ -30,18 +31,17 @@ public class Produto {
 	private String console;
 	
 	@NotBlank(message = "O atributo nome é Obrigatório!")
-	@Size( min = 5, max = 100, message = "O atributo nome deve conter no mínimo 05 e no máximo 100 caracteres.")
+	@Size(min = 5, max = 100, message = "O atributo nome deve conter no mínimo 05 e no máximo 100 caracteres.")
 	private String nome;
 
 	@NotBlank(message = "O atributo descrição é Obrigatório!")
-	@Size( min = 10, max = 1000, message = "O atributo descrição deve conter no mínimo 05 e no máximo 100 caracteres.")
+	@Size(min = 10, max = 1000, message = "O atributo descrição deve conter no mínimo 05 e no máximo 100 caracteres.")
 	private String descricao;
 	
-	@NotBlank
+	@Positive
 	private int quantidade;
 	
 	@JsonFormat(shape=JsonFormat.Shape.STRING)
-	@NotBlank
 	private BigDecimal preco;
 	
 	@Size(max = 100, message = "O atributo foto deve conter no mínimo 05 e no máximo 100 caracteres.")
